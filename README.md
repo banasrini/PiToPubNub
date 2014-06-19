@@ -17,7 +17,7 @@ from iotconnector import iotbridge
 
 pi = iotbridge(publish_key = 'demo', subscribe_key = 'demo', uuid = 'PI')
 
-channel = 'button-reply'
+channel = 'iotchannel'
 message = "hello from pi"
 
 def callbackfn(message):
