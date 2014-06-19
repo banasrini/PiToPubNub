@@ -1,0 +1,204 @@
+<html lang="en"><head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+  
+
+    <title>Raspberry Pi</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="blog.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy this line! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  <style type="text/css"></style><style id="holderjs-style" type="text/css"></style></head>
+
+  <body style="">
+
+ <!--   <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/Users/bhavana/Desktop/bootstrap/cover.html">Home</a>
+          <a class="navbar-brand" href="/Users/bhavana/Desktop/bootstrap/features.html">Features</a>
+          <a class="navbar-brand" href="#">Dashboard 101</a>
+          <a class="navbar-brand" href="https://github.com/banasrini/Test">Github</a>
+        </div>
+      </div>
+    </div> -->
+
+    <div class="container">
+
+      <div class="blog-header">
+        <h1 class="blog-title">Making the Raspberry Pi talk PubNub's language</h1>
+        <p class="lead blog-description"><a href = "/Users/bhavana/Desktop/bootstrap/cover.html">IoT-PubNub-Embedded Devices </a></p>
+      </div>
+
+      <div class="row">
+
+        <div class="col-sm-8 blog-main">
+
+          <div class="blog-post">
+            <p class="blog-post-meta">June 7, 2014 by <a href="#">Bhavana</a></p>
+
+            <p>With all the buzz surrounding IoT, its only natural for us at PubNub to dive right into it. 
+			With over two hundred million connected devices connected to our global realtime network in fourteen data centers, 
+			we average 50 to 60 thousands transactions per second, peaking at over 3 million. PubNub has its foot in the automative
+			industry, home automation and IoT wearables.</p>
+            <hr>
+            
+            <p>The <a href = "http://www.raspberrypi.org">Raspberry Pi</a>, is a fully functional mini-computer, and is a cheap 
+            solution for harnessing the Internet of Things. It include plenty of inputs and outputs for sensory add-ons 
+             to test light, temperature, humidity and more. 
+             </p>
+             
+             <p> This post walks you through the steps of connecting a Raspberry Pi to the PubNub network. This way you can now connect
+              with
+             a million other devices on this global network and start sending or receiving information to and from the Pi. 
+             <hr>
+             PubNub provides 
+             extensive documentation and support for the Raspberry Pi <a href = "http://www.pubnub.com/documentation/">here </a>. Once
+            you are up and running with the Pi, feel free to choose your favorite language and start connecting. I have used
+             <a href = "https://github.com/pubnub/python"> Python </a> for this project.
+              </p> <br>
+
+        
+           
+            <h2>Basics of Connecting the Raspberry Pi to PubNub</h2>
+
+            <p>Follow these steps to get connected. </p>
+            <br>
+            
+            <p> <strong> STEP 1: </strong> Connect the Pi to a monitor, keyboard, mouse and ethernet cable. Check out their website at
+            <a href = "http://www.raspberrypi.org"> Raspberry Pi </a> to set up your Pi. Login in to
+            the Raspberry Pi OS and open IDLE, the python IDE. 
+            <br></br>
+            <p> <strong> STEP 2: </strong> Open a new window and paste the following code.
+            <pre><code>from Pubnub import Pubnub
+from IoT_wrapper import iotwrapper
+
+pi = iotwrapper(publish_key = 'demo', 
+		subscribe_key = 'demo', 
+		uuid = 'PI')
+
+channel = 'iotchannel'
+message = "hello from pi"
+
+pi.send(channel, message)
+		
+pi.connect(channel)</code></pre>
+            
+             <blockquote>
+              <p> The above code lets you set up the following :
+              <ul>
+              	<li> publish key using "publish_key" </li>
+              	<li> subscribe key using "subscribe_key" </li>
+              	<li> UUID using "uuid" </li>
+              	<li> channel you wish to subscribe and publish to using "channel"</li>
+              	<li> message that you want to send. This is a JSON message. </li>
+              </ul>
+              
+              </p>
+            </blockquote> 
+            <p> We create an instance of the iotwrapper called pi and we can use the SEND and CONNECT methods belonging to that
+            class.  
+            
+            <br></br>
+            <strong>SEND: </strong>This invokes the publish() API to send any message over a desired 
+			channel.</p>
+            <p><pre><code>def send(self, channel, message):
+    self.pubnub.publish({
+    	'channel' : channel,
+    	'message' : message})</code></pre></p>    
+            <br></br>
+            
+        
+            <p><strong>CONNECT:</strong> This invokes the subscribe() API to listen for messages from other embedded devices
+             connected to the same channel.
+            the call back function receive is invoked when subscribe runs.
+             </p>
+			<pre><code>def connect(self, channel):
+    self.pubnub.subscribe({
+      	'channel' : channel,
+       	'callback' : self.receive})
+       		
+def receive(self,message):  
+    print(message)</code></pre>
+    		<br>
+    		<p> You can customize the channels you publish/subscribe to, the UUID you assume and also the messages you 
+    		send by just changing the above fields. 
+    		<br></br>
+    	<p> <strong> huzzzaaaaah! </strong> 
+    	Thats it! You can now talk Raspberry Pi to any other device or application subscribing/publishing to the same channel.
+    	
+    	</p>
+            
+          </div><!-- /.blog-post -->
+
+        
+        </div><!-- /.blog-main -->
+
+        <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+          <div class="sidebar-module sidebar-module-inset">
+            <h3>PubNub</h3>
+            <p>The PubNub Realtime Network powers thousands of apps, streaming more than 3 million messages a second to over
+             200 million devices a month. 
+             <p><a class="btn btn-default" href="http://www.pubnub.com" role="button">View details »</a></p></p>
+          </div>
+          <div class="sidebar-module">
+            <h3>Related Blog Posts</h3>
+     <ul>
+      	
+              <li>IoT Arduino board connected to the Dashboard</li>
+              
+        </ul>
+          </div>
+          <div class="sidebar-module">
+            <h4>Elsewhere</h4>
+            <ol class="list-unstyled">
+              <li><a href="#">GitHub</a></li>
+              <li><a href="#">Twitter</a></li>
+              <li><a href="#">Facebook</a></li>
+            </ol>
+          </div>
+        </div><!-- /.blog-sidebar -->
+
+      </div><!-- /.row -->
+
+    </div><!-- /.container -->
+
+    <div class="blog-footer">
+      
+      <p>
+        <a href="#">Back to top</a>
+      </p>
+    </div>
+    
+    
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="bootstrap.min.js"></script>
+  
+
+</body></html>
