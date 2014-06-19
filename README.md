@@ -13,9 +13,9 @@ Two Simple Commands
 The code is so simple and straightforward. 
 ```python
 from Pubnub import Pubnub
-from iotconnector import iotwrapper
+from iotconnector import iotbridge
 
-pi = iotwrapper(publish_key = 'demo', subscribe_key = 'demo', uuid = 'PI')
+pi = iotbridge(publish_key = 'demo', subscribe_key = 'demo', uuid = 'PI')
 
 channel = 'button-reply'
 message = "hello from pi"
