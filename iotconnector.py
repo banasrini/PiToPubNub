@@ -22,6 +22,6 @@ class iotbridge(object):
         # Sending message on the channel
         self.pubnub.publish(channel, message)
  
-    def connect(self, channel, receiver):
+    def connect(self, channel, callback):
         # Listening for messages on the channel
         self.pubnub.subscribe(channel, callback=callback)
