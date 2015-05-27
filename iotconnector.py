@@ -20,13 +20,8 @@ class iotbridge(object):
     
     def send(self, channel, message):
         # Sending message on the channel
-        self.pubnub.publish({
-            'channel' : channel,
-            'message' : message})
+        self.pubnub.publish(channel, message)
  
     def connect(self, channel, receiver):
         # Listening for messages on the channel
-        self.pubnub.subscribe({
-            'channel' : channel,
-            'callback' : receiver
-        })
+        self.pubnub.subscribe(channel, callback=callback)
