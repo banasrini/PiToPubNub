@@ -1,4 +1,4 @@
-from Pubnub import Pubnub
+from pubnub import Pubnub
 from iotconnector import iotbridge
  
 pi = iotbridge(publish_key = 'demo', subscribe_key = 'demo', uuid = 'PI')
